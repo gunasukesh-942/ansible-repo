@@ -1,0 +1,37 @@
+---
+- hosts: dev
+  connection: ssh
+
+
+  tasks:
+    - name: install java for tomcat
+      yum: name=java-1.8.0-openjdk state=present
+
+    - name: downalod tomcat url
+      get_url:
+        url: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz"
+        dest: "." #it will download in currentdirectory ( home directory of root)
+
+    - name: untar the file
+      command: tar -zxvf apache-tomcat-9.0.86.tar.gz
+
+    - name: start the tomcat
+      shell: nohup ./apache-tomcat-9.0.86/bin/startup.sh
+                
+        #now we can access it public ip :8080 
+#tomcat-users.xml and context.xml ,we need to chage
+# we need to download that files to our local ,need to edit the files after that we need to place those in server,then tomcat setup will complete.
+#
+
+    - name: copy the tomcat-users.xml
+      copy:
+        src: "/root/new/tomcat-users.xml"
+        dest: "/root/apache-tomcat-9.0.86/conf/tomcat-users.xml"
+
+    - name: copy the context.xml
+      template:
+        src: "/root/new/context.xml"
+        dest: "/root/apache-tomcat-9.0.86/webapps/manager/META-INF/context.xml"
+
+#configuration files change chesam kabatti malli shutdown.sh exectue chesi malli startup.sh excetute cheyyali ....but cheyyakapoyina ikkda work avuthundhi
+#best practice configuration files change chesam kabatti we need to restart ( shutdown and startup) 

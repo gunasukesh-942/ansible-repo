@@ -1,0 +1,52 @@
+---
+- hosts: test
+  connection: ssh
+
+  tasks:
+
+    - name: install java-1.8.0-openjdk
+      yum: name=java-1.8.0-openjdk state=present
+
+    - name: install tomcat using url
+      get_url:
+        url: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz"
+        dest: "."
+
+    - name: untar tomcat
+      command: tar -zxvf apache-tomcat-9.0.86.tar.gz
+
+    - name: copy the context.xml
+      copy:
+        src: "/root/new/context.xml"
+        dest: "/root/apache-tomcat-9.0.86/webapps/manager/META-INF/context.xml"
+
+    - name: copy the tomcat-users.xml
+      template:
+        src: "/root/new/tomcat-users.xml"
+        dest: "/root/apache-tomcat-9.0.86/conf/tomcat-users.xml"
+
+    - name: install git and maven
+      yum: name=git,maven state=present
+
+    - name: getting code from github
+      git:
+        repo: "https://github.com/gunasukesh-942/one.git"
+        dest: "/root/project/"
+        version: "master"           #clone ayyetappudu master branch default ga ravadaniki
+
+    - name: changing the directory to where pom.xml and excetute and mvn command
+      command: mvn clean package
+      args:
+        chdir: "/root/project/"                 #mention chesina directory loki velli mvn clean pkg command perform chestundhi
+
+    - name: copy the war file from target 
+      copy:
+        src: "/root/project/target/myweb-8.4.8.war"
+        dest: "/root/apache-tomcat-9.0.86/webapps/myweb-8.4.8.war"
+        remote_src: yes                                             #manam copy cheyyalsina file kuda remote lone vundhi ani mention cheyyandaniki
+
+    - name: start the tomcat server
+      shell: "nohup /root/apache-tomcat-9.0.86/bin/startup.sh"    #nohup is used run the process in background
+
+
+

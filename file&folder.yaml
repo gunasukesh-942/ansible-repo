@@ -1,0 +1,40 @@
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: creating a single file
+      file:
+        path: "/root/abc.txt" #need to give path along with filename where the file need to create
+        state: touch          
+
+    - name: creating a directory
+      file:
+        path: "/root/dir1"  #need to path along with directory name
+        state: directory 
+
+    - name: creating multiple files
+      file:
+        path: "/root/{{item}}"
+        state: touch
+        owner: ec2-user   #changing owner
+        group: ec2-user   #changing group
+        mode: 777         #chnaging permisonss but in targetsection these files have same permisson but wont show same thing it will show -t at end to overcome we                          #nedd to intead of 777 we need to give 0777 so that our permissons we will get exactly 
+      with_items:
+        - f1.txt
+        - f2.txt
+        - f3.txt
+
+    - name: creating multiple directories
+      file:
+        path: "/root/{{item}}"  #item is like loop here ,only item name will work
+        state: directory
+        mode: 0777          #as i mentioned in abobve comment i will get excat 777 permissions for directory when we add zero(0) in front 
+      with_items:
+        - folder1
+        - folder2
+        - folder3
+
+          ####################################################################################
+          #ansible-playbook file\&folder.yaml ....used to execute this plabook#
+          ####################################################################################

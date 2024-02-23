@@ -1,0 +1,27 @@
+---
+- hosts: localhost  #if action action need to done in our ansibleserver
+  connection: ssh
+
+  tasks:
+
+    - name: install java11
+      command: amazon-linux-extras install java-openjdk11 -y 
+
+    - name: getting jenkins url from internet
+      get_url:                                                      #get-url is used to download the urls from intrent
+        url: "https://pkg.jenkins.io/redhat-stable/jenkins.repo"
+        dest: "/etc/yum.repos.d/jenkins.repo"
+
+    - name: importing keys
+      ansible.builtin.rpm_key:                                       #this module is used to import the key from intrent
+        key: "https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key"
+        state: present
+
+    - name: install jenkins
+      yum: name=jenkins state=present
+
+    - name: start the jnekins
+      service: name=jenkins state=started
+
+
+        #now we can accesss this application using publicip:8080 ##

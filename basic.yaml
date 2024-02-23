@@ -1,0 +1,33 @@
+---
+- hosts: dev                   #we can give two targets sections as well ("dev,test")
+  user: root                    #optional if we are connecting with root user
+  become: yes                    #optional bcz the root user already hava sudo privalages
+  connection: ssh
+
+  tasks:
+    - name: installing git with action module
+      action: yum name="git" state=present                         #installing git with action module (we can use yum also)
+
+    - name: installing tree with yum module
+      yum: name=tree state=present                                  #installing package using yum module
+
+    - name: installing httpd and java-1.8.0-openjdk
+      yum: name=httpd,java-1.8.0-openjdk state=present                 #we can install multiple pkgs 
+
+
+    - name: installing java 11 
+      command: amazon-linux-extras install java-openjdk11 -y            #java11 is not available in yum right so that we can use command 
+
+        #if  pkg is availablke in for that if we use command module we will get warning,but for this we wont get any error bcz java11 not available in yum
+    
+    - name: starting webservice
+      service: name=httpd state=started   #Service module is used to start the service
+
+
+
+        #we have different types of states available
+        #state=present.........install pkg
+        #state=absent..........uninstall pkg
+        #state=started.........to start the service
+        #state=restarted........to restart the service
+        #state=stopped...........to stop the service

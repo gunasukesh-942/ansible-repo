@@ -1,0 +1,34 @@
+---
+- hosts: dev
+  connection: ssh
+
+  vars:
+    abc: git
+    xyz: tree,maven
+
+  tasks:
+    - name: installing git 
+      yum: name={{abc}} state=present
+
+    - name: installing tree and maven
+      yum: name={{xyz}} state=present
+
+    - name: installing httpd
+      yum: name={{pqr}} state=present # this variable is not available in varaiable section we nedd to give in CLI while executing playbook
+
+########## ansible-playbook FILENAME --extra-vars "pqr=<toolname1>,<toolname2>" ##################i
+    - name: installing java-1.8.0-openjdk
+      yum: name={{sukesh}} state=present
+#####we can give multiple variable aswell in CLI ############
+#we alredy have pqr and now sukesh both are not defined in varaiables section
+################## ansible-playbook filename --extra-vars "pqr=httpd sukesh=java-1.8.0-openjdk" ####################
+
+    - name: uninstalling multiple tools using loops
+      yum: name={{item}} state=absent
+      with_items:
+        - git             #git will take take time too uninstall ,reaming are uninstalled u can check
+        - maven
+        - tree
+        - httpd
+
+

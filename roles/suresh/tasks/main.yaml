@@ -1,0 +1,5 @@
+- name: getting the code from github
+  git:
+    repo: "https://github.com/gunasukesh-942/one.git"
+    dest: "/root/project"
+    version: master

@@ -1,0 +1,8 @@
+- name: install java and maven
+  yum: name=java-1.8.0-openjdk,maven state=present
+
+- name: change to the directory & do the mvn command
+  command: mvn clean package
+  args:
+    chdir: "/root/project/"
+

@@ -1,0 +1,33 @@
+---
+- hosts: test
+  connection: ssh
+
+  tasks:
+    - name: creating an user
+      user: name=devops state=present
+
+
+    - name: creating group
+      group: name=group1 state=present
+
+
+        #   - name: debugging
+        #  debug:
+        #command: cat /etc/passwd
+        #register: abc
+        # msg: "total available users are:{{abc.stdout}}"
+        #
+        #
+        #debug module verey aa comibantion lo work avvadhu debug module lo only msg mataramey vuntundhi kindha(if we weant we cane remove -name also we can direct -debug)
+        #
+    - name: reading the user
+      command: cat /etc/passwd
+      register: abc
+
+    - name: debug module using here to check whether users are created ornot
+      debug:
+         msg: "the available users are {{abc.stdout}}"
+
+
+    
+

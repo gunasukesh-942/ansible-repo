@@ -1,0 +1,26 @@
+---
+- hosts: test
+  connection: ssh
+
+  tasks:
+   - name: installing httpd
+     yum: name=httpd state=present
+
+   - name: start webserver
+     service: name=httpd state=started
+
+   - name: synchronise module
+     synchronize:
+        src: "./new/"
+        dest: "/var/www/html/"
+        checksum: yes
+        delete: yes
+        recursive: yes
+
+
+          #src: Specifies the source directory on your local machine.
+          #dest: Specifies the destination directory on the remote server.
+          #checksum: Enables checksum-based comparison to determine if a file needs to be updated. Only files with different checksums will be transferred.
+          #delete: Enables deletion of files in the destination directory that do not exist in the source directory.
+          #recursive: Performs a recursive synchronization, ensuring that entire directory trees are synchronized.
+

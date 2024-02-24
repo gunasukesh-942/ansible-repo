@@ -1,0 +1,30 @@
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: using debug module to know the slave flavour(distro)
+      debug:
+        msg: "{{ansible_os_family}}"
+
+    - name: using debug module to know details of memory(used ,total & free)
+      debug:
+        msg: "{{ansible_memory_mb.real}}"
+
+    - name: using debug module to know free memory only
+      debug:
+        msg: "{{ansible_memory_mb.real.free}}"
+
+    - name: using debug module to know the total memory only
+      debug:
+        msg: "{{ansible_memory_mb.real.total}}"
+
+    - name: using debug module to know the slave kernel
+      debug:
+        msg: "{{ansible_kernel}}"
+    - name: ee module mana target machines details complete ga istundhi (like ip addr,creation data,users,..)
+      debug:
+        msg: "{{ansible_facts}}"
+
+
+

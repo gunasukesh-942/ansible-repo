@@ -1,0 +1,35 @@
+---
+- hosts: test
+  connection: ssh
+
+  vars:
+    db_name: sukesh
+    db_passwd: 1234
+    db_ip: 123.123.123.123
+
+  tasks:
+    - name: copy module 
+      copy:
+        src: "/root/app.sh"
+        dest: "/etc/app.sh"
+
+    - name: template module
+      template:
+        src: "/root/app.sh"
+        dest: "/root/app.sh"
+
+#
+#
+#
+#...........app.sh...aney file lo ee data vuntundhi
+#db_name: {{db_name}}
+#db_passwd: {{db_passwd}}
+#db_ip: {{db_ip}}
+#
+#file(app.sh)  lo define chesina varaibles ni target server loki copy chestetappudu manam dynamic ga values ivvachhu either using vars or ee vars direct CLI lo kuda ivvachhu (ansible-playbook filename --extra-vars "db_name=abc db_passwd: 5678 db_name:11.11.11.11")
+#
+#variables manam both vars section lonu and CLI lonu istey ,cli lo ichhina valuse vars section lo vunna values in ovveride chestundhi
+#
+#copy module lo only static content matramey copy avuthundhi ...file lo edhi vuntey adhi 
+#
+#

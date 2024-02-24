@@ -1,0 +1,17 @@
+---
+- hosts: dev
+  connection: ssh
+
+  tasks:
+    - name: install httpd
+      yum: name=httpd state=present
+      notify: start the webserver      #ikkada notify lo ichhina danni exact ga handlers lo name lo ,once ee task exectute ithey notify lo vunnadhi velli handlers lo vunna danni call chestundhi
+
+  handlers:
+
+    - name: start the webserver
+      service: name=httpd state=started
+
+
+        #first time chesinappudu install avuthundhi hadlerslo vunna danni call chestundhi
+        #2 nd same playbook run chestey ....already install ipoyindhi kabatti OK state loki vastundhi so malli httpd install avvadhu,so ikkada installation jaragledhu kabatti next handlers lo vunna task excetute avvadhu

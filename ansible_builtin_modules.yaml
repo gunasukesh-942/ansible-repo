@@ -1,0 +1,35 @@
+---
+- hosts: test
+  connection: ssh
+
+  tasks:
+
+    - name: install httpd
+      yum: name=httpd state=present
+      when: ansible_os_family == "RedHat"
+
+    - name: install apche2
+      apt: name=apache2 state=present
+      when: ansible_os_family == "Ubuntu"
+
+    - name: install git
+      apt: name=git state=present
+      when: ansible_os_family == "Debian"
+
+ ########################################
+ #
+ #
+ #mana target section lo vunna servers flavour ni base chesukoni install avuthundhi
+ #
+ #mana slave server REDHAT ithey only httpd matram eey install avuthundhi ,remaining skip ipothai
+ #
+ #ansible buil in modules chala vuntai
+ #
+ #...ansible_os_kernel == "based on the kernel version"
+ #...ansible_memory_mb.real == " to check memory in slave server total details vastai: used and free"
+ #...ansible_memory_mb.real.free == " to check the free memory"
+ #...ansible_memory_mb.real.total == "total memory details"
+ #
+ #ila chala builtin modules vuntai vatini base chesukoni manam target section lo emina cheyyali antey cheyyachhu
+ #like manam flavours ni batti action jaragali ani pina rasam likewise ee bulitn modules use cheyyachhu
+

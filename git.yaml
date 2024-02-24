@@ -1,0 +1,15 @@
+---
+- hosts: test
+  connection: ssh
+
+  tasks:
+
+    - name: installing git 
+      yum: name=git state=present
+
+    - name: getting the code from git 
+      git:
+        repo: "https://github.com/gunasukesh-942/one.git"
+        dest: "/root/repo"
+
+
